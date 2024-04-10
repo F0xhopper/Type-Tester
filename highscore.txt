@@ -1,1 +1,13 @@
-53.0
+Eden:50.0
+oscar:90.0
+ben:10.0
+Fish:58.0
+Me:52.0
+Ed:49.0
+Foxhopper:49.0
+Benji:36.0
+Ben:56.0
+Foxy:46.0
+benji:66.0
+asdasd:50.0
+asdasd:50.0
