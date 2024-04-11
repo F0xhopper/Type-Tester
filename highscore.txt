@@ -11,3 +11,4 @@ Foxy:46.0
 benji:66.0
 asdasd:50.0
 asdasd:50.0
+Foxhopper:38.0

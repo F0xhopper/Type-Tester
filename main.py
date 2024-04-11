@@ -9,7 +9,7 @@ class TypingTestApp(tk.Tk):
         super().__init__()
         self.title("Typing Test")
         self.config(padx=20,pady=20,background='black')
-        self.paragraphs = ["The cat lazily stretched out in the warmth of the afternoon sun.",'Books lined the shelves, their spines bearing the weight of countless stories.','With a flick of the switch, the room was bathed in soft, golden light.']
+        self.paragraphs = ["The sun dipped below the horizon, casting long shadows across the \nlandscape. The sky turned a vibrant orange, painting a breathtaking scene for\n those who cared to look. Nature's beauty never failed to inspire awe.","High in the mountains, the air was crisp and thin, carrying the scent of \npine and snow. The silence was profound, broken only bythe occasional chirp\n of a bird or the rustle of leaves in the breeze. It was a place of tranquility,\n far removed from the noise of the world below."]
         self.current_paragraph = random.choice(self.paragraphs)
         self.running = False
         self.username = ""
@@ -47,7 +47,7 @@ class TypingTestApp(tk.Tk):
         self.paragraph = tk.Label(self, text=self.current_paragraph, fg='white', background='black', font=("Helvetica", 17), width=60, height=4)
         self.paragraph.grid(row=2, column=0, columnspan=3, pady=10)
 
-        self.text_input = tk.Text(height=8, width=60, background='white', fg='black', font=(14))      
+        self.text_input = tk.Text(height=8, background='white', fg='black', font=(24))      
         self.text_input.grid(row=3, column=0, columnspan=3, pady=(10))
         self.text_input.bind("<KeyRelease>", self.start)
        
@@ -81,13 +81,13 @@ class TypingTestApp(tk.Tk):
             self.running = True
             t = threading.Thread(target=self.update_times_scores)
             t.start()
-        if not self.paragraph.cget("text").startswith(self.text_input.get("1.0","end-1c")):
+        if not self.current_paragraph.replace("\n", "").startswith(self.text_input.get("1.0","end-1c")):
             self.text_input.config(fg='red')
             self.total_mistakes += 1
             
         else:
             self.text_input.config(fg='black')
-        if self.paragraph.cget("text") == self.text_input.get("1.0","end-1c"):
+        if self.current_paragraph.replace("\n", "") == self.text_input.get("1.0","end-1c"):
              self.running = False
              self.text_input.config(fg='green')
              if self.wpm > self.highscore:
