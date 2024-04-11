@@ -154,21 +154,25 @@ class TypingTestApp(tk.Tk):
             top_3_scores_label_text.append(f'{i+1}. {username}: {wpm:.0f} wpm')
         # Update highscres label
         self.highscore_label.config(text='\n'.join(top_3_scores_label_text))
-        
+
     # Method for writing new score to the txt file        
     def set_new_score(self):
         with open("highscore.txt", "a") as score_file:
             score_file.write(f'{self.username}:{self.wpm}\n')
     
     # Method for restarting the test    
-    def reset(self):   
+    def reset(self):
+        # Wait 0.1 second for update_time_scores function to finish
         time.sleep(0.1)
+        # Clear input
         self.text_input.delete("1.0","end-1c") 
+        # Reset variables
         self.running = False
         self.counter = 0.0
         self.total_letters_types = 0
         self.total_mistakes = 0
         self.wpm = 0
+        #  Update labels
         self.timer.config(text='0 cpm')
         self.wpm_label.config(text='0 w/m')
         self.current_paragraph = random.choice(self.paragraphs)
