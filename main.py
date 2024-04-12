@@ -1,4 +1,5 @@
 import tkinter as tk
+from datetime import datetime
 import random
 import time
 import threading
@@ -7,17 +8,18 @@ class TypingTestApp(tk.Tk):
     def __init__(self):
         super().__init__()
         # Initialize the tkinter application
-        self.title("Typing Test")
+        self.title("TypeTrail.io")
         self.config(padx=30, pady=30, background='black')
         # Define paragraphs to be copied
         self.paragraphs = ["The sun dipped below the horizon, casting long shadows across the \nlandscape. The sky turned a vibrant orange, painting a breathtaking scene for\n those who cared to look. Nature's beauty never failed to inspire awe.",
-                           "High in the mountains, the air was crisp and thin, carrying the scent of \npine and snow. The silence was profound, broken only by the occasional chirp\n of a bird or the rustle of leaves in the breeze. It was a place of tranquility,\n far removed from the noise of the world below."]
+                           "High in the mountains, the air was crisp and thin, carrying the scent of \npine and snow. The silence was profound, broken only by the occasional chirp\n of a bird or the rustle of leaves in the breeze. It was a place of tranquility,\n far removed from the noise of the world below.",
+                           "The moon cast a silver glow over the sleepy town, illuminating empty streets.\n Shadows danced with the gentle breeze, whispering secrets to the night. In \nthe distance, a lone owl hooted its melancholic melody, adding to the\n nocturnal symphony."]
         # Initialize variables
         self.current_paragraph = random.choice(self.paragraphs)
         self.running = False
         self.username = ""
         self.counter = 0
-        self.total_letters_types = 0
+        self.total_inputs = 0
         self.total_mistakes = 0
         # Make username input pop up appear
         self.get_username()
@@ -28,14 +30,14 @@ class TypingTestApp(tk.Tk):
 
     def create_widgets(self):
         # Create title label
-        self.title = tk.Label(self, justify="left", text="TypeTest.io", background='black', fg='white', font=("Helvetica", 35))
-        self.title.grid(column=1, row=0)
+        self.title = tk.Label(self, justify="left", text="TypeTrail.io", background='black', fg='white', font=("Helvetica", 35))
+        self.title.grid(column=1, row=0,padx=110)
         # Create label for highscores
-        self.highscore_label = tk.Label(self, justify="left", anchor="w", wraplength=200, background='black', fg='white', font=("Helvetica", 14))
+        self.highscore_label = tk.Label(self, justify="left", anchor="w", background='black', fg='white', font=("Helvetica", 14))
         self.highscore_label.grid(column=0, row=0, columnspan=1)
         # Create label for displaying username
-        self.name_label = tk.Label(self, width=16, background='black', fg='white', font=("Helvetica", 14))
-        self.name_label.grid(column=2, row=0, columnspan=1)
+        self.name_label = tk.Label(self, width=21,justify="right", anchor="e", background='black', fg='white', font=("Helvetica", 14))
+        self.name_label.grid(column=2, row=0, columnspan=1,padx=20)
         # Create frame for statistics
         self.stats_frame = tk.Frame(background='black')
         self.stats_frame.grid(column=1, row=1, pady=10)
@@ -82,14 +84,14 @@ class TypingTestApp(tk.Tk):
         self.username = self.username_entry.get()
         # Checkts if the input is empty, destroys popup, clears input and initiates typing test if not
         if self.username.strip() != "":
-            self.name_label.config(text=f'Playing: {self.username}')
+            self.name_label.config(text=f'User playing: {self.username}')
             self.username_entry.delete(0, tk.END)
             self.username_entry.master.destroy()
 
     # Method triggered when typing to calculate if paragraph is matching or wrong
     def start(self, event):
         # Count the amount typed
-        self.total_letters_types += 1
+        self.total_inputs += 1
         # If not already running start keeping count of scores and time
         if not self.running:
             self.running = True
@@ -100,6 +102,7 @@ class TypingTestApp(tk.Tk):
             self.text_input.config(fg='red')
             self.total_mistakes += 1
         else:
+          
             self.text_input.config(fg='black')
         # When the paragraph is completely typed end session, save score to file and turn text green
         if self.current_paragraph.replace("\n", "") == self.text_input.get("1.0", "end-1c"):
@@ -121,7 +124,7 @@ class TypingTestApp(tk.Tk):
             total_words = len(self.text_input.get("1.0","end-1c").split(' '))
             # When a mistake is made calculate the new accuracy
             if self.total_mistakes != 0:
-                accuracy = int((self.total_letters_types - self.total_mistakes) / self.total_letters_types *100 )
+                accuracy = int((self.total_inputs - self.total_mistakes) / self.total_inputs *100 )
             # When the times is started calculate new wpm and cpm
             if self.counter != 0:  
                 self.wpm = total_words // (self.counter / 60.0)
@@ -136,29 +139,37 @@ class TypingTestApp(tk.Tk):
 
     # Method loading the highest scores from the txt file
     def load_highscore(self):
-      with open("highscore.txt", "r") as score_file:
-        lines = score_file.readlines()
-        # Initialize scores variable
-        scores = []
-        # read and add scores to the scores array as tuple
-        for line in lines:
-            parts = line.strip().split(":")
-            username = parts[0]
-            wpm = float(parts[1])
-            scores.append((username, wpm))
-        # Sorts scores into order based on wpm
-        scores.sort(key=lambda x: x[1], reverse=True)
-        # Initialise top_3_scores_label_text variable and read, format and append the top 3 scores to top_3_scores_label_text from scores array
-        top_3_scores_label_text = []
-        for i, (username, wpm) in enumerate(scores[:3]):
-            top_3_scores_label_text.append(f'{i+1}. {username}: {wpm:.0f} wpm')
-        # Update highscres label
-        self.highscore_label.config(text='\n'.join(top_3_scores_label_text))
+      try:
+            with open("highscore.txt", "r") as score_file:
+                lines = score_file.readlines()
+                # Initialize scores variable
+                scores = []
+                # read and add scores username and date to the scores array as tuple
+                for line in lines:
+                    parts = line.strip().split(":")
+                    username = parts[0]
+                    wpm = float(parts[1])
+                    date = parts[2]
+                    scores.append((username, wpm, date))
+                # Sort scores into order based on wpm
+                scores.sort(key=lambda x: x[1], reverse=True)
+                # Initialize top_3_scores_label_text variable and read, format and append the top 3 scores to top_3_scores_label_text from scores array
+                top_3_scores_label_text = []
+                for i, (username, wpm, date) in enumerate(scores[:3]):
+                    top_3_scores_label_text.append(f'{i+1}. {username}: {wpm:.0f} wpm {date}')
+                # Update highscores label
+                self.highscore_label.config(text='\n'.join(top_3_scores_label_text))
+      except FileNotFoundError:
+            print("Error: highscore file not found.")
+      except Exception as e:
+            print(f"An error occurred while loading highscores: {e}")
 
-    # Method for writing new score to the txt file        
+    # Method for writing new score with date to the txt file        
     def set_new_score(self):
+        # Get current date
+        current_date = datetime.now().strftime("%d--%m-%Y") 
         with open("highscore.txt", "a") as score_file:
-            score_file.write(f'{self.username}:{self.wpm}\n')
+            score_file.write(f'{self.username}:{self.wpm}:{current_date}\n')
     
     # Method for restarting the test    
     def reset(self):
@@ -169,12 +180,12 @@ class TypingTestApp(tk.Tk):
         # Reset variables
         self.running = False
         self.counter = 0.0
-        self.total_letters_types = 0
+        self.total_inputs = 0
         self.total_mistakes = 0
         self.wpm = 0
         #  Update labels
         self.timer.config(text='0 cpm')
-        self.wpm_label.config(text='0 w/m')
+        self.wpm_label.config(text='0 wpm')
         self.current_paragraph = random.choice(self.paragraphs)
         self.paragraph.config(text=self.current_paragraph)
         self.accuracy_label.config(text='0% Accuracy')
