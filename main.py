@@ -8,7 +8,7 @@ class TypingTestApp(tk.Tk):
     def __init__(self):
         super().__init__()
         # Initialize the tkinter application
-        self.title("TypeTrail.io")
+        self.title("TypeTrial.io")
         self.config(padx=30, pady=30, background='black')
         # Define paragraphs to be copied
         self.paragraphs = ["The sun dipped below the horizon, casting long shadows across the \nlandscape. The sky turned a vibrant orange, painting a breathtaking scene for\n those who cared to look. Nature's beauty never failed to inspire awe.",
@@ -30,7 +30,7 @@ class TypingTestApp(tk.Tk):
 
     def create_widgets(self):
         # Create title label
-        self.title = tk.Label(self, justify="left", text="TypeTrail.io", background='black', fg='white', font=("Helvetica", 35))
+        self.title = tk.Label(self, justify="left", text="TypeTrial.io", background='black', fg='white', font=("Helvetica", 35))
         self.title.grid(column=1, row=0,padx=110)
         # Create label for highscores
         self.highscore_label = tk.Label(self, justify="left", anchor="w", background='black', fg='white', font=("Helvetica", 14))
