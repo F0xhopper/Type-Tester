@@ -1,0 +1,1 @@
+TypeTrial.io is a typing speed test application developed using Python's Tkinter library. It allows users to measure their typing speed, accuracy, and words per minute (WPM) by typing out given paragraphs. Users can also view and compare their scores with others through a high score board that displays the top scores.
