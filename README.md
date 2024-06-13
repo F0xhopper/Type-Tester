@@ -2,29 +2,19 @@ TypeTrial.io is a typing speed test application developed using Python's Tkinter
 
 Features
 
-User Authentication:
-
+- User Authentication:
 Users can enter their usernames to personalize their experience.
-
-Typing Test:
-
+- Typing Test:
 Users type a randomly chosen paragraph displayed on the screen.
 Real-time feedback is provided to indicate if the typed text is correct or incorrect.
-
-Real-Time Statistics:
-
+- Real-Time Statistics:
 Displays typing speed in characters per minute (CPM).
 Shows words per minute (WPM).
 Tracks and displays typing accuracy.
-
-High Score Tracking:
-
+- High Score Tracking:
 Maintains a list of top scores with usernames and dates.
 Scores are saved and loaded from a text file (highscore.txt).
 
-Restart Functionality:
-
-Users can restart the test at any time to try again.
 
 Usage
 
